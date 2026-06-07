@@ -3,21 +3,93 @@
 #include <string.h>
 #include <time.h>
 
+typedef struct ativ
+{
+    int cap;
+    struct ativ *prox;
+} ativ;
 
 typedef struct produto
 {
     int id;
     char nome[100]; 
 } produto;
-//------------------------------------------
-//FILA DE PRODUTOS
-//------------------------------------------
+
 typedef struct fila {
     int vazao;
     produto *p;
     struct fila *prox;
     struct fila *ant;
 }fila;
+
+typedef struct simulacao{
+    char nome[100];
+    int semente;
+    int limite_tempo;
+    int quant;
+    int taxa;
+    char nome_prod[50];
+
+}simulacao;
+typedef struct etapa
+{
+    fila **f;
+    char nome[100];
+    int id;
+    int tam;
+    int taxa_falha;
+    int cap;
+    struct etapa *prox;
+    struct etapa *ant;
+} etapa;
+
+void inserir_etapa(etapa **head, char nome[100], int id, int cap,int tam,int taxa_falha);
+
+void load_file(char file[50],simulacao **s,etapa **head){
+    char string[100];
+    FILE *f = fopen(file,"r");
+
+    if (f == NULL){
+        printf("Não foi possivel abrir o arquivo");
+        return;
+    }
+    while(fgets(string,100,f)){
+        char* str = strtok(string, " ");
+        if (!str) continue;
+        
+        if (strcmp(str,"SIMULACAO") == 0 ){
+            for(int i=0;i<3;i++){
+                // adiciona os valores relacionados a SIMULACAO do arquivo para a struct simulacao
+                if (i == 0 ) strcpy((*s)->nome,strtok(NULL," \n")); 
+                if (i == 1 ) (*s)->semente = atoi(strtok(NULL," \n")); 
+                if (i == 2 ) (*s)->limite_tempo =atoi(strtok(NULL," \n")); 
+            }
+        }
+        else if (strcmp(str,"PRODUTOS") == 0){
+            for (int i =0;i<3;i++){
+                // adiciona os valores relacionados a PRODUTOS do arquivo para a struct simulacao
+                if (i == 0) (*s)->quant = atoi(strtok(NULL," \n")); 
+                if (i == 1) (*s)->taxa = atoi(strtok(NULL," \n")); 
+                if (i == 2) strcpy((*s)->nome_prod,strtok(NULL," \n"));
+            }
+        }
+        else if (strcmp(str,"ETAPA") == 0){
+            char *id = strtok(NULL," \n");
+            char *quant = strtok(NULL," \n");
+            char *cap = strtok(NULL," \n");
+            char *taxa = strtok(NULL," \n");
+            char *nome = strtok(NULL," \n");
+            inserir_etapa(head,nome,atoi(id),atoi(cap),atoi(quant),atoi(taxa));
+
+        }
+    }
+    
+    fclose(f);
+}
+
+//------------------------------------------
+//FILA DE PRODUTOS
+//------------------------------------------
 
 //Inserir na fila
 void put_fila(fila **f,produto *p){
@@ -62,28 +134,9 @@ produto *pop_fila(fila **f){
     aux->ant = NULL;
     free(aux);
     return p;
-}           
+}          
 
-
-typedef struct etapa
-{
-    fila **f;
-    char nome[100];
-    int id;
-    int tam;
-    int cap;
-    struct etapa *prox;
-    struct etapa *ant;
-} etapa;
-
-typedef struct ativ
-{
-    int cap;
-    struct ativ *prox;
-} ativ;
-
-
-void inserir_etapa(etapa **head, char nome[100], int id, int cap)
+void inserir_etapa(etapa **head, char nome[100], int id, int cap,int tam,int taxa_falha)
 {
     //-----------------------
     // Essa função gasta O(n), mas é possivel reduzir para constante
@@ -92,6 +145,8 @@ void inserir_etapa(etapa **head, char nome[100], int id, int cap)
     //CRIA A ETAPA
     etapa *novo = (etapa*)malloc(sizeof(etapa));
     strcpy(novo->nome, nome);
+    novo->tam = tam;
+    novo->taxa_falha = taxa_falha;
     novo->prox = NULL;
     novo->ant = NULL;
     novo->id = id;
@@ -118,12 +173,13 @@ void show_etapa(etapa **head){
     }
 }
 
-void main()
+int main()
 {
-    etapa *e1 = NULL;
-
-    inserir_etapa(&e1,"Construcao",1,10);
-    inserir_etapa(&e1,"acabamento",2,5);
-    show_etapa(&e1);
+    etapa *e = NULL;
+    simulacao *s = malloc(sizeof(simulacao));
+    load_file("input.txt",&s,&e);
+    show_etapa(&e);
+    free(s);
+    return 0;
 
 }
