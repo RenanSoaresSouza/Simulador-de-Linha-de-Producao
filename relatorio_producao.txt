@@ -1,0 +1,7 @@
+=== METADADOS ===
+id_simulacao: Widget-A_2026
+semente_utilizada: 42
+produtos_concluidos: 0
+falhas_totais: 2
+Meta alcancada: nao
+
