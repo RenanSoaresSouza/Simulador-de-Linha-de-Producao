@@ -1,5 +1,5 @@
-SIMULACAO linha_producao_widgets_v1 42 10000
-PRODUTOS 80 3 Widget-A
+SIMULACAO linha_producao_widgets_v1 55 1000
+PRODUTOS 8 3 Widget-A
 LINHA_PRODUCAO 3
 ETAPA 1 2 8 0.02 Preparacao
 ATIVIDADE 1 3 0.02 Cortar_chapa
