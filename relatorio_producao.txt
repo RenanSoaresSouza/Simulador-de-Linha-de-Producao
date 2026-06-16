@@ -1,0 +1,276 @@
+=== METADADOS ===
+id_simulacao: simulacao_20260615_1916
+semente_utilizada: 55
+arquivo_entrada: input.txt
+tick_fim: 1000
+produtos_concluidos: 8
+tempo_medio_linha: 999.13
+tempo_medio_espera: 5.13
+falhas_totais: 1
+Meta alcancada: sim
+Produtos faltantes: 0
+
+=== RELATORIO DA SIMULACAO Widget-A ===
+------- RELATORIO DAS ETAPAS -----------------
+ETAPA 1 Preparacao:
+Atividades: 2
+Quantidade de falhas: 1
+Falhas por produto: 0.13
+Tempo minimo: 3
+Tempo medio: 7.38
+Tempo maximo: 16
+Tempo medio em fila: 6.13
+
+ETAPA 2 Montagem:
+Atividades: 3
+Quantidade de falhas: 0
+Falhas por produto: 0.00
+Tempo minimo: 12
+Tempo medio: 13.11
+Tempo maximo: 22
+Tempo medio em fila: 3.89
+
+ETAPA 3 Inspecao:
+Atividades: 1
+Quantidade de falhas: 0
+Falhas por produto: 0.00
+Tempo minimo: 10
+Tempo medio: 10.00
+Tempo maximo: 10
+Tempo medio em fila: 1.00
+
+------- RELATORIO DAS ATIVIDADES--------------
+ETAPA 1 Preparacao:
+ATIVIDADE 1 Cortar_chapa:
+Capacidade: 8
+Vazao: 8
+Tempo de execucao: 3
+Tempo medio em fila: 0.13
+Tempo medio total: 3.13
+
+ATIVIDADE 2 Lixar_bordas:
+Capacidade: 8
+Vazao: 8
+Tempo de execucao: 0
+Tempo medio em fila: 6.00
+Tempo medio total: 6.00
+
+ETAPA 2 Montagem:
+ATIVIDADE 1 Soldar_placa:
+Capacidade: 5
+Vazao: 8
+Tempo de execucao: 5
+Tempo medio em fila: 1.00
+Tempo medio total: 6.00
+
+ATIVIDADE 2 Fixar_parafusos:
+Capacidade: 5
+Vazao: 8
+Tempo de execucao: 3
+Tempo medio em fila: 1.00
+Tempo medio total: 4.00
+
+ATIVIDADE 3 Fixar_cabos:
+Capacidade: 5
+Vazao: 9
+Tempo de execucao: 4
+Tempo medio em fila: 2.11
+Tempo medio total: 6.11
+
+ETAPA 3 Inspecao:
+ATIVIDADE 3 Teste_de_carga:
+Capacidade: 4
+Vazao: 8
+Tempo de execucao: 10
+Tempo medio em fila: 1.00
+Tempo medio total: 11.00
+
+------- RELATORIO DOS PRODUTOS ----------------
+--- PRODUTO 2 ---
+Modelo: Widget-A
+Criacao: tick 0
+Entrada na linha: tick 0
+Saida da linha: tick 38
+Tempo total: 38 ticks
+Tempo em espera: 10 ticks
+Falhas: 1
+Trajetoria:
+Etapa 1 tentativa 1:
+Atividade 1 (Cortar_chapa) fila:0 inicio:0 fim:2 FALHOU
+Ticks na etapa: 2 ticks
+Etapa 1 tentativa 2:
+Atividade 1 (Cortar_chapa) fila:2 inicio:3 fim:5 OK
+Atividade 2 (Lixar_bordas) fila:5 inicio:17 fim:16 OK
+Ticks na etapa: 14 ticks
+Etapa 2 tentativa 1:
+Atividade 1 (Soldar_placa) fila:16 inicio:17 fim:21 OK
+Atividade 2 (Fixar_parafusos) fila:21 inicio:22 fim:24 OK
+Atividade 3 (Fixar_cabos) fila:24 inicio:25 fim:28 OK
+Ticks na etapa: 12 ticks
+Etapa 3 tentativa 1:
+Atividade 3 (Teste_de_carga) fila:28 inicio:29 fim:38 OK
+Ticks na etapa: 10 ticks
+--- PRODUTO
+
+--- PRODUTO 6 ---
+Modelo: Widget-A
+Criacao: tick 2
+Entrada na linha: tick 2
+Saida da linha: tick 38
+Tempo total: 36 ticks
+Tempo em espera: 11 ticks
+Falhas: 0
+Trajetoria:
+Etapa 1 tentativa 1:
+Atividade 1 (Cortar_chapa) fila:2 inicio:2 fim:4 OK
+Atividade 2 (Lixar_bordas) fila:4 inicio:17 fim:16 OK
+Ticks na etapa: 14 ticks
+Etapa 2 tentativa 1:
+Atividade 1 (Soldar_placa) fila:16 inicio:17 fim:21 OK
+Atividade 2 (Fixar_parafusos) fila:21 inicio:22 fim:24 OK
+Atividade 3 (Fixar_cabos) fila:24 inicio:25 fim:28 OK
+Ticks na etapa: 12 ticks
+Etapa 3 tentativa 1:
+Atividade 3 (Teste_de_carga) fila:28 inicio:29 fim:38 OK
+Ticks na etapa: 10 ticks
+--- PRODUTO
+
+--- PRODUTO 7 ---
+Modelo: Widget-A
+Criacao: tick 2
+Entrada na linha: tick 2
+Saida da linha: tick 38
+Tempo total: 36 ticks
+Tempo em espera: 11 ticks
+Falhas: 0
+Trajetoria:
+Etapa 1 tentativa 1:
+Atividade 1 (Cortar_chapa) fila:2 inicio:2 fim:4 OK
+Atividade 2 (Lixar_bordas) fila:4 inicio:17 fim:16 OK
+Ticks na etapa: 14 ticks
+Etapa 2 tentativa 1:
+Atividade 1 (Soldar_placa) fila:16 inicio:17 fim:21 OK
+Atividade 2 (Fixar_parafusos) fila:21 inicio:22 fim:24 OK
+Atividade 3 (Fixar_cabos) fila:24 inicio:25 fim:28 OK
+Ticks na etapa: 12 ticks
+Etapa 3 tentativa 1:
+Atividade 3 (Teste_de_carga) fila:28 inicio:29 fim:38 OK
+Ticks na etapa: 10 ticks
+--- PRODUTO
+
+--- PRODUTO 3 ---
+Modelo: Widget-A
+Criacao: tick 1
+Entrada na linha: tick 1
+Saida da linha: tick 36
+Tempo total: 35 ticks
+Tempo em espera: 9 ticks
+Falhas: 0
+Trajetoria:
+Etapa 1 tentativa 1:
+Atividade 1 (Cortar_chapa) fila:1 inicio:1 fim:3 OK
+Atividade 2 (Lixar_bordas) fila:3 inicio:5 fim:4 OK
+Ticks na etapa: 3 ticks
+Etapa 2 tentativa 1:
+Atividade 1 (Soldar_placa) fila:4 inicio:5 fim:9 OK
+Atividade 2 (Fixar_parafusos) fila:9 inicio:10 fim:12 OK
+Atividade 3 (Fixar_cabos) fila:12 inicio:13 fim:16 OK
+Atividade 3 (Fixar_cabos) fila:12 inicio:23 fim:26 OK
+Ticks na etapa: 22 ticks
+Etapa 3 tentativa 1:
+Atividade 3 (Teste_de_carga) fila:26 inicio:27 fim:36 OK
+Ticks na etapa: 10 ticks
+--- PRODUTO
+
+--- PRODUTO 4 ---
+Modelo: Widget-A
+Criacao: tick 1
+Entrada na linha: tick 1
+Saida da linha: tick 26
+Tempo total: 25 ticks
+Tempo em espera: 0 ticks
+Falhas: 0
+Trajetoria:
+Etapa 1 tentativa 1:
+Atividade 1 (Cortar_chapa) fila:1 inicio:1 fim:3 OK
+Atividade 2 (Lixar_bordas) fila:3 inicio:5 fim:4 OK
+Ticks na etapa: 3 ticks
+Etapa 2 tentativa 1:
+Atividade 1 (Soldar_placa) fila:4 inicio:5 fim:9 OK
+Atividade 2 (Fixar_parafusos) fila:9 inicio:10 fim:12 OK
+Atividade 3 (Fixar_cabos) fila:12 inicio:13 fim:16 OK
+Ticks na etapa: 12 ticks
+Etapa 3 tentativa 1:
+Atividade 3 (Teste_de_carga) fila:16 inicio:17 fim:26 OK
+Ticks na etapa: 10 ticks
+--- PRODUTO
+
+--- PRODUTO 5 ---
+Modelo: Widget-A
+Criacao: tick 1
+Entrada na linha: tick 1
+Saida da linha: tick 26
+Tempo total: 25 ticks
+Tempo em espera: 0 ticks
+Falhas: 0
+Trajetoria:
+Etapa 1 tentativa 1:
+Atividade 1 (Cortar_chapa) fila:1 inicio:1 fim:3 OK
+Atividade 2 (Lixar_bordas) fila:3 inicio:5 fim:4 OK
+Ticks na etapa: 3 ticks
+Etapa 2 tentativa 1:
+Atividade 1 (Soldar_placa) fila:4 inicio:5 fim:9 OK
+Atividade 2 (Fixar_parafusos) fila:9 inicio:10 fim:12 OK
+Atividade 3 (Fixar_cabos) fila:12 inicio:13 fim:16 OK
+Ticks na etapa: 12 ticks
+Etapa 3 tentativa 1:
+Atividade 3 (Teste_de_carga) fila:16 inicio:17 fim:26 OK
+Ticks na etapa: 10 ticks
+--- PRODUTO
+
+--- PRODUTO 0 ---
+Modelo: Widget-A
+Criacao: tick 0
+Entrada na linha: tick 0
+Saida da linha: tick 25
+Tempo total: 25 ticks
+Tempo em espera: 0 ticks
+Falhas: 0
+Trajetoria:
+Etapa 1 tentativa 1:
+Atividade 1 (Cortar_chapa) fila:0 inicio:0 fim:2 OK
+Atividade 2 (Lixar_bordas) fila:2 inicio:4 fim:3 OK
+Ticks na etapa: 3 ticks
+Etapa 2 tentativa 1:
+Atividade 1 (Soldar_placa) fila:3 inicio:4 fim:8 OK
+Atividade 2 (Fixar_parafusos) fila:8 inicio:9 fim:11 OK
+Atividade 3 (Fixar_cabos) fila:11 inicio:12 fim:15 OK
+Ticks na etapa: 12 ticks
+Etapa 3 tentativa 1:
+Atividade 3 (Teste_de_carga) fila:15 inicio:16 fim:25 OK
+Ticks na etapa: 10 ticks
+--- PRODUTO
+
+--- PRODUTO 1 ---
+Modelo: Widget-A
+Criacao: tick 0
+Entrada na linha: tick 0
+Saida da linha: tick 25
+Tempo total: 25 ticks
+Tempo em espera: 0 ticks
+Falhas: 0
+Trajetoria:
+Etapa 1 tentativa 1:
+Atividade 1 (Cortar_chapa) fila:0 inicio:0 fim:2 OK
+Atividade 2 (Lixar_bordas) fila:2 inicio:4 fim:3 OK
+Ticks na etapa: 3 ticks
+Etapa 2 tentativa 1:
+Atividade 1 (Soldar_placa) fila:3 inicio:4 fim:8 OK
+Atividade 2 (Fixar_parafusos) fila:8 inicio:9 fim:11 OK
+Atividade 3 (Fixar_cabos) fila:11 inicio:12 fim:15 OK
+Ticks na etapa: 12 ticks
+Etapa 3 tentativa 1:
+Atividade 3 (Teste_de_carga) fila:15 inicio:16 fim:25 OK
+Ticks na etapa: 10 ticks
+--- PRODUTO
+
