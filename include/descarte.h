@@ -15,5 +15,6 @@ extern int total_falhas_sistema;
 extern int total_concluidos_sistema;
 
 void push_descarte(produto *p);
+void liberar_descarte(no_descarte *pilha);
 
 #endif

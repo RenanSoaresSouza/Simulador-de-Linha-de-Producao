@@ -15,5 +15,6 @@ typedef struct fila_entrada {
 
 void enqueue_entrada(fila_entrada *fila, produto *p);
 produto *dequeue_entrada(fila_entrada *fila);
+void liberar_fila_entrada(fila_entrada *fila);
 
 #endif

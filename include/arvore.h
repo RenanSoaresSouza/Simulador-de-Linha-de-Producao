@@ -11,5 +11,6 @@ typedef struct produtos_log_tree {
 
 produtos_log_tree *inserir_arvore(produtos_log_tree *raiz, produto *p);
 produtos_log_tree *remover_arvore(produtos_log_tree *raiz, int id);
+void liberar_arvore(produtos_log_tree *raiz);
 
 #endif

@@ -60,47 +60,6 @@ no_descarte *pilha_descarte_global = NULL;
 int total_falhas_sistema = 0;
 int total_concluidos_sistema = 0;
 
-void liberar_arvore(produtos_log_tree *raiz) {
-    if (raiz == NULL)
-        return;
-
-    liberar_arvore(raiz->left);
-    liberar_arvore(raiz->right);
-
-    free(raiz);
-}
-/*
-typedef struct no_descarte {
-    produto *prod;
-    struct no_descarte *prox;
-} no_descarte;
- */
-void liberar_descarte(no_descarte *pilha){
-    no_descarte *aux;
-    while (pilha){
-        aux = pilha;
-        pilha = pilha->prox;
-        liberar_historico(aux->prod->historico);
-        free(aux->prod);
-        free(aux);
-    }
-}
-void liberar_fila_entrada(fila_entrada *fila) {
-    no_fila *aux;
-
-    while (fila->start) {
-        aux = fila->start;
-        fila->start = fila->start->next;
-
-        liberar_historico(aux->prod->historico);
-        free(aux->prod);
-        free(aux);
-    }
-
-    fila->end = NULL;
-}
-
-
 // ==========================================
 // 5. DA_MAIN_E_EXECUÇÃO_DO_TEMPO
 // ==========================================

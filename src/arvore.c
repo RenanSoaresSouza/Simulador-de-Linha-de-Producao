@@ -37,3 +37,12 @@ produtos_log_tree *remover_arvore(produtos_log_tree *raiz, int id) {
     }
     return raiz;
 }
+void liberar_arvore(produtos_log_tree *raiz) {
+    if (raiz == NULL)
+        return;
+
+    liberar_arvore(raiz->left);
+    liberar_arvore(raiz->right);
+
+    free(raiz);
+}

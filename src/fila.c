@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include "fila.h"
 #include "utils.h"
+#include "produtos.h"
+#include "pilha.h"
 
 void enqueue_entrada(fila_entrada *fila, produto *p) {
     no_fila *novo = xmalloc(sizeof(no_fila));
@@ -23,4 +25,18 @@ produto *dequeue_entrada(fila_entrada *fila) {
     if (!fila->start) fila->end = NULL;
     free(aux);
     return p;
+}
+void liberar_fila_entrada(fila_entrada *fila) {
+    no_fila *aux;
+
+    while (fila->start) {
+        aux = fila->start;
+        fila->start = fila->start->next;
+
+        liberar_historico(aux->prod->historico);
+        free(aux->prod);
+        free(aux);
+    }
+
+    fila->end = NULL;
 }
