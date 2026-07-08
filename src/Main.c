@@ -2,6 +2,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include "atividades.h"
+#include "etapas.h"
+#include "pilha.h"
+#include "utils.h"
+#include "produtos.h"
+#include "ativos.h"
+#include "fila.h"
+#include "descarte.h"
+#include "arvore.h"
+#include "utils.h"
 
 //bibliotecas usadas em windows/linux dependendo do OS
 #ifdef _WIN32
@@ -46,423 +56,9 @@
     }
 #endif
 
-// ==========================================
-// 1. ESTRUTURAS DE DADOS OBRIGATÓRIAS
-// ==========================================
-
-typedef struct atividade {
-    char nome[50];
-    float falha;
-    int duracao;
-    int id;
-    int itens_processados;
-    int tempo_total_fila;
-    int tempo_total_execucao;
-    struct atividade *next;
-} atividade;
-
-typedef struct fila_atividades {
-    atividade *start;
-    atividade *end;
-} fila_atividades;
-
-typedef struct etapa {
-    int id;
-    char nome[100];
-    int quant_atv;
-    int cap_eta;          
-    int ocupacao_atual;   
-    float taxa_falha_ini; 
-    int total_falhas;
-    int produtos_processados;
-    int tempo_minimo;
-    int tempo_maximo;
-    int tempo_total_gasto;
-    int tempo_total_fila;
-    fila_atividades atividades;
-    struct etapa *next;
-    struct etapa *prev;
-} etapa;
-
-typedef struct no_pilha {
-    int atividade_id;
-    int etapa_id;
-    char nome_etapa[50];
-    char nome_atividade[50];
-    int tentativa_num; 
-    int tick_fila;
-    int tick_inicio;
-    int tick_fim;
-    int status_resultado; 
-    struct no_pilha *prox;
-} no_pilha;
-
-typedef struct produto {
-    int id;
-    int tick_saida;
-    etapa *etapa_atual;
-    atividade *ativ_atual;
-    int criacao;          
-    int entrada_linha;    
-    int restante;         
-    int falhas_totais;    
-    int tempo_espera;     
-    int tick_entrou_na_fila_da_atividade;
-    int tick_entrada_etapa; 
-    int tentativa_atual;    
-    no_pilha *historico;  
-} produto;
-
-typedef struct no_fila {
-    produto *prod;
-    struct no_fila *next;
-} no_fila;
-
-typedef struct fila_entrada {
-    no_fila *start;
-    no_fila *end;
-} fila_entrada;
-
-typedef struct ativos {
-    produto *prod;
-    struct ativos *next;
-} ativos;
-
-typedef struct produtos_log_tree {
-    produto *prod;
-    struct produtos_log_tree *left;
-    struct produtos_log_tree *right;
-} produtos_log_tree;
-
-typedef struct no_descarte {
-    produto *prod;
-    struct no_descarte *prox;
-} no_descarte;
-
 no_descarte *pilha_descarte_global = NULL;
 int total_falhas_sistema = 0;
 int total_concluidos_sistema = 0;
-
-void *xmalloc(size_t size) {
-    void *p = malloc(size);
-
-    if (p == NULL) {
-        printf("Erro de memoria\n");
-        exit(EXIT_FAILURE);
-    }
-
-    return p;
-}
-
-// ==========================================
-// 2. FUNÇÕES DE MANIPULAÇÃO DAS ESTRUTURAS
-// ==========================================
-
-void push_historico(produto *p, atividade *ativ, etapa *eta, int t_fila, int t_ini, int t_fim, int status) {
-    no_pilha *novo = xmalloc(sizeof(no_pilha));
-    novo->atividade_id = ativ->id;
-    strncpy(novo->nome_atividade, ativ->nome, sizeof(novo->nome_atividade)-1);
-    novo->nome_atividade[sizeof(novo->nome_atividade)-1] = '\0';
-    novo->tick_fila = t_fila;
-    novo->tick_inicio = t_ini;
-    novo->tick_fim = t_fim;
-    novo->status_resultado = status;
-    novo->prox = p->historico;
-    novo->etapa_id = eta->id;
-    strncpy(novo->nome_etapa, eta->nome, sizeof(novo->nome_etapa)-1);
-    novo->nome_etapa[sizeof(novo->nome_etapa)-1] = '\0';
-    novo->tentativa_num = p->tentativa_atual; 
-    p->historico = novo;
-}
-
-void pop_historico(produto *p) {
-    if (p->historico) {
-        no_pilha *aux = p->historico;
-        p->historico = p->historico->prox;
-        free(aux);
-    }
-}
-
-no_pilha* inverter_historico(no_pilha *topo) {
-    no_pilha *anterior = NULL;
-    no_pilha *atual = topo;
-    no_pilha *proximo = NULL;
-    while (atual != NULL) {
-        proximo = atual->prox;  
-        atual->prox = anterior; 
-        anterior = atual;       
-        atual = proximo;        
-    }
-    return anterior; 
-}
-
-void push_descarte(produto *p) {
-    no_descarte *novo = xmalloc(sizeof(no_descarte));
-    novo->prod = p;
-    novo->prox = pilha_descarte_global;
-    pilha_descarte_global = novo;
-}
-
-void enqueue_entrada(fila_entrada *fila, produto *p) {
-    no_fila *novo = xmalloc(sizeof(no_fila));
-    novo->prod = p;
-    novo->next = NULL;
-    if (!fila->start) {
-        fila->start = novo;
-        fila->end = novo;
-    } else {
-        fila->end->next = novo;
-        fila->end = novo;
-    }
-}
-
-produto *dequeue_entrada(fila_entrada *fila) {
-    if (!fila->start) return NULL;
-    no_fila *aux = fila->start;
-    produto *p = aux->prod;
-    fila->start = fila->start->next;
-    if (!fila->start) fila->end = NULL;
-    free(aux);
-    return p;
-}
-
-void inserir_atividade(fila_atividades *fila, const char *nome, float falha, int duracao, int id) {
-    atividade *novo = xmalloc(sizeof(atividade));
-    strncpy(novo->nome, nome, sizeof(novo->nome)-1);
-    novo->nome[sizeof(novo->nome)-1] = '\0';
-    novo->falha = falha;
-    novo->duracao = duracao;
-    novo->id = id;
-    novo->itens_processados = 0;
-    novo->tempo_total_fila = 0;
-    novo->tempo_total_execucao = 0;
-    novo->next = NULL;
-    if (!(fila->start)) {
-        fila->start = novo;
-        fila->end = novo;
-    } else {
-        fila->end->next = novo;
-        fila->end = novo;
-    }
-}
-
-void inserir_etapa(etapa **head, int id, int cap, float falha_ini, char *nome, int q_atv) {
-    etapa *novo = xmalloc(sizeof(etapa));
-    strncpy(novo->nome, nome, sizeof(novo->nome)-1);
-    novo->nome[sizeof(novo->nome)-1] = '\0';
-    novo->id = id;
-    novo->quant_atv = q_atv;
-    novo->cap_eta = cap;
-    novo->ocupacao_atual = 0;
-    novo->taxa_falha_ini = falha_ini;
-    novo->total_falhas = 0;
-    novo->produtos_processados = 0;
-    novo->tempo_minimo = 999999; 
-    novo->tempo_maximo = 0;
-    novo->tempo_total_gasto = 0;
-    novo->tempo_total_fila = 0;
-    novo->atividades.start = NULL;
-    novo->atividades.end = NULL;
-    novo->next = NULL;
-    novo->prev = NULL;
-    if (!(*head)) *head = novo;
-    else {
-        etapa *aux = *head;
-        while (aux->next) aux = aux->next;
-        aux->next = novo;
-        novo->prev = aux;
-    }
-}
-
-void inserir_ativos(ativos **head, produto *p) {
-    ativos *novo = xmalloc(sizeof(ativos));
-    novo->prod = p;
-    novo->next = *head;
-    (*head) = novo;
-}
-
-void remover_ativos(ativos **head, int id) {
-    ativos *aux = *head, *ant = NULL;
-    while (aux && aux->prod->id != id) {
-        ant = aux;
-        aux = aux->next;
-    }
-    if (aux) {
-        if (!ant) *head = aux->next;
-        else ant->next = aux->next;
-        free(aux);
-    }
-}
-
-produtos_log_tree *inserir_arvore(produtos_log_tree *raiz, produto *p) {
-    if (!(raiz)) {
-        produtos_log_tree *novo = xmalloc(sizeof(produtos_log_tree));
-        novo->prod = p;
-        novo->left = NULL;
-        novo->right = NULL;
-        return novo;
-    }
-    if (p->id < raiz->prod->id) raiz->left = inserir_arvore(raiz->left, p);
-    else raiz->right = inserir_arvore(raiz->right, p);
-    return raiz;
-}
-
-produtos_log_tree *remover_arvore(produtos_log_tree *raiz, int id) {
-    if (!raiz) return NULL;
-    if (id < raiz->prod->id) raiz->left = remover_arvore(raiz->left, id);
-    else if (id > raiz->prod->id) raiz->right = remover_arvore(raiz->right, id);
-    else {
-        if (!raiz->left) {
-            produtos_log_tree *temp = raiz->right;
-            free(raiz);
-            return temp;
-        } else if (!raiz->right) {
-            produtos_log_tree *temp = raiz->left;
-            free(raiz);
-            return temp;
-        }
-        produtos_log_tree *temp = raiz->right;
-        while (temp && temp->left) temp = temp->left;
-        raiz->prod = temp->prod;
-        raiz->right = remover_arvore(raiz->right, temp->prod->id);
-    }
-    return raiz;
-}
-
-// ==========================================
-// 3. IMPRESSÃO DO PAINEL EM TEMPO REAL
-// ==========================================
-void imprimir_painel(int tick_atual, etapa *fila_etapas, fila_entrada *f_entrada, ativos *fila_ativos) {
-    #ifdef _WIN32
-        system("cls");
-    #else
-        system("clear");
-    #endif
-
-    printf("========================================================\n");
-    printf("     FABRICA AO VIVO | TICK: %d \n", tick_atual);
-    printf("========================================================\n");
-    printf(" COMANDOS: [P] Pausar/Continuar | [S ou ESC] Pular pro Fim\n");
-    printf("--------------------------------------------------------\n");
-
-    int qtd_entrada = 0;
-    no_fila *aux_f = f_entrada->start;
-    while(aux_f) { qtd_entrada++; aux_f = aux_f->next; }
-    printf(" [Caixa de Entrada]: %d produtos aguardando vaga\n\n", qtd_entrada);
-
-    etapa *aux_e = fila_etapas;
-    while(aux_e) {
-        printf(" [%s] (Ocupacao: %d/%d)\n", aux_e->nome, aux_e->ocupacao_atual, aux_e->cap_eta);
-        
-        atividade *aux_a = aux_e->atividades.start;
-        while(aux_a) {
-            printf("    -> %s:\n", aux_a->nome);
-            
-            int encontrou = 0;
-            ativos *aux_atv = fila_ativos;
-            while(aux_atv) {
-                produto *p = aux_atv->prod;
-                if(p->etapa_atual->id == aux_e->id && p->ativ_atual->id == aux_a->id) {
-                    if (p->restante == 0) {
-                        printf("       - Produto #%d (AGUARDANDO GARGALO)\n", p->id);
-                    } else {
-                        printf("       - Produto #%d (Resta: %ds)\n", p->id, p->restante);
-                    }
-                    encontrou = 1;
-                }
-                aux_atv = aux_atv->next;
-            }
-            if(!encontrou) printf("       (vazio)\n");
-            
-            aux_a = aux_a->next;
-        }
-        printf("\n");
-        aux_e = aux_e->next;
-    }
-    
-    printf("--------------------------------------------------------\n");
-    printf("   Concluidos: %d   |   Descartados (Mortos): %d\n", total_concluidos_sistema, total_falhas_sistema);
-    printf("========================================================\n");
-}
-
-// ==========================================
-// 4. ENTRADA DE CONFIGURAÇÃO (PARSER)
-// ==========================================
-void carregar_arquivo(char *nome_file, etapa **fila_etapas, int *qtd_total, int *vazao, char *nome, int *semente, int *duracao) {
-    FILE *file = fopen(nome_file, "r");
-    if (!file) { printf("Erro ao abrir o arquivo %s\n", nome_file); exit(1); }
-
-    char string[50];
-    etapa *etapa_atual = NULL;
-
-    while (fscanf(file, "%s", string) != EOF) {
-        if (!(strcmp(string, "SIMULACAO"))) {
-            char nome_simulacao[50];
-            fscanf(file, "%s %d %d", nome_simulacao, semente, duracao);
-            srand(*semente);
-        } else if (!(strcmp(string, "PRODUTOS"))) {
-            fscanf(file, "%d %d %s", qtd_total, vazao, nome);
-        } else if (!(strcmp(string, "ETAPA"))) {
-            int id, atividades, cap;
-            float falha_ini;
-            char nome_etapa[50];
-            fscanf(file, "%d %d %d %f %s", &id, &atividades, &cap, &falha_ini, nome_etapa);
-
-            inserir_etapa(fila_etapas, id, cap, falha_ini, nome_etapa, atividades);
-            etapa *aux_busca = *fila_etapas;
-            while (aux_busca->next) aux_busca = aux_busca->next;
-            etapa_atual = aux_busca;
-        } else if (!(strcmp(string, "ATIVIDADE"))) {
-            int id, duracao_at;
-            float chance;
-            char nome_atividade[50];
-            fscanf(file, "%d %d %f %s", &id, &duracao_at, &chance, nome_atividade);
-
-            if (etapa_atual) inserir_atividade(&(etapa_atual->atividades), nome_atividade, chance, duracao_at, id);
-        }
-    }
-    fclose(file);
-}
-
-void liberar_atividades(fila_atividades *fila) {
-    atividade *aux;
-    while (fila->start){
-        aux = fila->start;
-        fila->start = fila->start->next;
-        free(aux);
-    }
-    fila->end = NULL;
-}
-
-void liberar_historico(no_pilha *head){
-    no_pilha *aux;
-    while(head){
-        aux = head;
-        head = head->prox;
-        free(aux);
-    }
-}
-
-void liberar_produtos(ativos *lista){
-    ativos *aux;
-    while (lista){
-        aux = lista;
-        lista = lista->next;
-        liberar_historico(aux->prod->historico);
-        free(aux->prod);
-        free(aux);
-    }
-}
-
-void liberar_etapas(etapa *head) {
-    etapa *aux;
-    while(head){
-        aux = head;
-        head = head->next;
-        liberar_atividades(&aux->atividades);
-        free(aux);
-    }
-}
 
 void liberar_arvore(produtos_log_tree *raiz) {
     if (raiz == NULL)
@@ -731,7 +327,24 @@ int main() {
     #endif
     printf("\nGerando relatorio final de metricas...\n");
 
-    FILE *arquivo_saida = fopen("relatorio_producao.txt", "w");
+    char nome[256];
+    int i = 1;
+
+    FILE *arquivo_saida;
+
+    do {
+        sprintf(nome, "relatorios/relatorio_%03d.txt", i);
+        arquivo_saida = fopen(nome, "r");
+
+        if (arquivo_saida) {
+            fclose(arquivo_saida);
+            i++;
+        }
+
+    } while (arquivo_saida);
+
+    arquivo_saida = fopen(nome, "w");
+
     if (!arquivo_saida) {
         printf("Erro ao gerar arquivo de saída!\n");
         liberar_etapas(fila_etapas);
@@ -875,7 +488,7 @@ int main() {
 
     fclose(arquivo_saida);
     printf("\n****** SIMULACAO FINALIZADA NO TICK %d ******\n", tick_final);
-    printf("Painel encerrado. O Relatorio foi salvo em 'relatorio_producao.txt'!\n");
+    printf("Painel encerrado. O Relatorio foi salvo em '%s'!\n",nome);
 
     liberar_etapas(fila_etapas);
     liberar_produtos(fila_ativos);

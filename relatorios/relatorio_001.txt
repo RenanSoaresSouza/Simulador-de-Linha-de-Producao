@@ -1,5 +1,5 @@
 === METADADOS ===
-id_simulacao: simulacao_20260707_2240
+id_simulacao: simulacao_20260707_2259
 semente_utilizada: 55
 arquivo_entrada: input.txt
 tick_fim: 1000
