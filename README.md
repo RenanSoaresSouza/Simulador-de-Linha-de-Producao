@@ -1,4 +1,8 @@
 # Simulador de Linha de Produção Industrial
+![C](https://img.shields.io/badge/C-11-blue)
+![GCC](https://img.shields.io/badge/GCC-Compiler-green)
+![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux-lightgrey)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
 O **Simulador de Linha de Produção Industrial** é um projeto desenvolvido em **C** com o objetivo de simular o funcionamento de uma linha de produção composta por diversas etapas e atividades. Durante a execução, produtos percorrem a linha produtiva, podendo enfrentar filas, tempos de espera, falhas operacionais e descarte por falhas críticas.
 
@@ -65,43 +69,44 @@ Durante o desenvolvimento deste projeto foram aplicados diversos conceitos de pr
 # Arquitetura
 
 ```
-Entrada (arquivo)
+  Entrada (arquivo)
 
-        │
-
-        ▼
+         │
+         ▼
 
 Fila de Entrada (FIFO)
 
-        │
+         │
+         ▼
 
-        ▼
+┌──────────────────┐
+│     Etapa 1      │
+│ Ativ.1 → Ativ.2  │
+└──────────────────┘
 
-     Etapa 1
+         │
+         ▼
 
-        │
+┌──────────────────┐
+│     Etapa 2      │
+│ Ativ.1 → Ativ.2  │
+└──────────────────┘
 
-        ▼
+         │
+         ▼
 
-     Etapa 2
+        ...
 
-        │
+         │
+         ▼
 
-        ▼
+    Última Etapa
 
-       ...
+         │
 
-        │
+  ┌──────┴──────┐
 
-        ▼
-
-Última Etapa
-
-        │
-
- ┌──────┴──────┐
-
- ▼             ▼
+  ▼             ▼
 
 Concluído   Descartado
 ```
@@ -155,7 +160,7 @@ PRODUTOS 80 3 Widget-A
 LINHA_PRODUCAO 3
 ETAPA 1 2 8 0.02 Preparacao
 ATIVIDADE 1 3 0.02 Cortar_chapa
-ATIVIDADE 2 0.01 Lixar_bordas
+ATIVIDADE 2 2 0.01 Lixar_bordas
 ETAPA 2 3 5 0.01 Montagem
 ATIVIDADE 1 5 0.07 Soldar_placa
 ATIVIDADE 2 3 0.04 Fixar_parafusos
@@ -249,8 +254,18 @@ Ao final da execução, é criado automaticamente um arquivo de relatório conte
 
 Os arquivos são armazenados na pasta `relatorios/` e recebem nomes sequenciais para evitar sobrescrever execuções anteriores.
 
----
-# Capturas de Tela
 
 ---
+# Captura de Tela
+
+![imagem](img/simulacao.png)
+
+---
+## Autores
+
+**Renan Soares Souza**
+
+
+Projeto desenvolvido para fins acadêmicos e como demonstração de conhecimentos em programação em C, estruturas de dados e simulação de sistemas.
+
 
