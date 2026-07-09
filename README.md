@@ -41,43 +41,24 @@ Este projeto busca reproduzir esses cenários em um ambiente virtual, permitindo
 
 ---
 
-# Estruturas de Dados Utilizadas
+## Conceitos Aplicados
 
-O projeto utiliza diversas estruturas de dados clássicas.
+Durante o desenvolvimento deste projeto foram aplicados diversos conceitos de programação, incluindo:
 
-### Lista Duplamente Encadeada
+* Alocação dinâmica de memória (`malloc` e `free`);
+* Modularização utilizando arquivos `.h` e `.c`;
+* Manipulação de arquivos de texto;
+* Geração de números pseudoaleatórios;
+* Estruturas de dados dinâmicas:
 
-Utilizada para representar as etapas da linha de produção.
+  * Lista simplesmente encadeada;
+  * Lista duplamente encadeada;
+  * Fila (FIFO);
+  * Pilha (LIFO);
+  * Árvore Binária de Busca (BST);
+* Organização modular do código;
+* Simulação baseada em eventos discretos (ticks).
 
-Cada etapa conhece sua anterior e sua próxima etapa.
-
-### Lista Simplesmente Encadeada
-
-Utilizada para representar:
-
-* atividades de cada etapa;
-* produtos ativos;
-* produtos descartados.
-
-### Fila (FIFO)
-
-Responsável pela fila de entrada dos produtos na linha de produção.
-
-### Pilha
-
-Armazena todo o histórico de execução de cada produto, incluindo:
-
-* atividade executada;
-* etapa;
-* tentativa;
-* tempo de fila;
-* tempo de início;
-* tempo de término;
-* sucesso ou falha.
-
-### Árvore Binária de Busca
-
-Utilizada para manter os produtos ativos indexados pelo identificador.
 
 ---
 
@@ -96,19 +77,19 @@ Fila de Entrada (FIFO)
 
         ▼
 
-Etapa 1
+     Etapa 1
 
         │
 
         ▼
 
-Etapa 2
+     Etapa 2
 
         │
 
         ▼
 
-...
+       ...
 
         │
 
@@ -131,38 +112,58 @@ Concluído   Descartado
 
 ```
 include/
+   ├── atividades.h
+   ├── etapas.h
+   ├── produtos.h
+   ├── fila.h
+   ├── pilha.h
+   ├── arvore.h
+   ├── descarte.h
+   ├── ativos.h
+   └── utils.h
 
-    atividades.h
-    etapas.h
-    produtos.h
-    fila.h
-    pilha.h
-    arvore.h
-    descarte.h
-    ativos.h
-    utils.h
-
-src/
-
-    Main.c
-    atividades.c
-    etapas.c
-    produtos.c
-    fila.c
-    pilha.c
-    arvore.c
-    descarte.c
-    ativos.c
-    utils.c
+src/ 
+   ├── Main.c
+   ├── atividades.c
+   ├── etapas.c
+   ├── produtos.c
+   ├── fila.c
+   ├── pilha.c
+   ├── arvore.c
+   ├── descarte.c
+   ├── ativos.c
+   └── utils.c
 ```
 
 ---
 
 # Arquivo de Entrada
 
-A simulação é configurada através de um arquivo texto:
+A simulação é configurada através de um arquivo de texto formado por:
+```
+SIMULACAO [nome_simulacao] [semente_para_numeros_aleatorios] [limite_tempo_seg]
+PRODUTO <quantidade_a_produzir> <taxa_produtos_por_seg> <nome_produto>
+LINHA_PRODUCAO <quantidade_etapas>
+ETAPA <id> <quantidade_atividades> <capacidade_total> <taxa_falha_inicial> [nome]
+ATIVIDADE <id> <tempo_para_finalizar_atividade> <taxa_falha> [nome]
 
+```
+Exemplo de um arquivo preenchido:
+```
+SIMULACAO linha_producao_widgets_v1 42 10000
+PRODUTOS 80 3 Widget-A
+LINHA_PRODUCAO 3
+ETAPA 1 2 8 0.02 Preparacao
+ATIVIDADE 1 3 0.02 Cortar_chapa
+ATIVIDADE 2 0.01 Lixar_bordas
+ETAPA 2 3 5 0.01 Montagem
+ATIVIDADE 1 5 0.07 Soldar_placa
+ATIVIDADE 2 3 0.04 Fixar_parafusos
+ATIVIDADE 3 4 0.05 Fixar_cabos
+ETAPA 3 1 4 0.02 Inspecao
+ATIVIDADE 1 10 0.05 Teste_de_carga
 
+```
 
 ---
 
@@ -226,6 +227,7 @@ gcc src/*.c -Iinclude -o simulador
 ---
 
 # Como Executar
+no terminal faça:
 
 ```
 ./simulador
@@ -248,6 +250,7 @@ Ao final da execução, é criado automaticamente um arquivo de relatório conte
 Os arquivos são armazenados na pasta `relatorios/` e recebem nomes sequenciais para evitar sobrescrever execuções anteriores.
 
 ---
+# Capturas de Tela
 
 ---
 
