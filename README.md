@@ -2,7 +2,6 @@
 ![C](https://img.shields.io/badge/C-11-blue)
 ![GCC](https://img.shields.io/badge/GCC-Compiler-green)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux-lightgrey)
-![License](https://img.shields.io/badge/License-MIT-yellow)
 
 O **Simulador de Linha de Produção Industrial** é um projeto desenvolvido em **C** com o objetivo de simular o funcionamento de uma linha de produção composta por diversas etapas e atividades. Durante a execução, produtos percorrem a linha produtiva, podendo enfrentar filas, tempos de espera, falhas operacionais e descarte por falhas críticas.
 
@@ -151,6 +150,7 @@ A simulação é configurada através de um arquivo de texto formado por:
 | `PRODUTOS`  | Quantidade de produtos, taxa de entrada e nome      |
 | `ETAPA`     | Define uma etapa da linha de produção               |
 | `ATIVIDADE` | Define uma atividade pertencente à etapa atual      |
+
 Estrutura do Arquivo:
 
 ```
