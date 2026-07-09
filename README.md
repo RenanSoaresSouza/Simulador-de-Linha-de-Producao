@@ -254,6 +254,8 @@ Ao final da execução, é criado automaticamente um arquivo de relatório conte
 
 Os arquivos são armazenados na pasta `relatorios/` e recebem nomes sequenciais para evitar sobrescrever execuções anteriores.
 
+você pode encontrar um exemplo de relatório de saída [aqui](relatorio_producao.txt)
+
 
 ---
 # Captura de Tela
