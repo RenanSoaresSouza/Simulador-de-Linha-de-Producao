@@ -1,11 +1,30 @@
 # Simulador de Linha de Produção Industrial
-![C](https://img.shields.io/badge/C-11-blue)
+![C](https://img.shields.io/badge/Language-C-blue)
 ![GCC](https://img.shields.io/badge/GCC-Compiler-green)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux-lightgrey)
+
+---
 
 O **Simulador de Linha de Produção Industrial** é um projeto desenvolvido em **C** com o objetivo de simular o funcionamento de uma linha de produção composta por diversas etapas e atividades. Durante a execução, produtos percorrem a linha produtiva, podendo enfrentar filas, tempos de espera, falhas operacionais e descarte por falhas críticas.
 
 Ao final da simulação, o sistema gera um relatório completo contendo métricas de desempenho da fábrica, das etapas, das atividades e de cada produto processado.
+
+---
+
+## Índice
+
+- Problema
+- Objetivos
+- Funcionalidades
+- Conceitos Aplicados
+- Arquitetura
+- Organização do Projeto
+- Arquivo de Entrada
+- Arquivo de Saída
+- Tecnologias
+- Como Compilar
+- Como Executar
+- Resultados
 
 ---
 
@@ -283,41 +302,6 @@ Tempo medio: 7.38
 Tempo maximo: 16
 Tempo medio em fila: 6.13
 
-------- RELATORIO DAS ATIVIDADES--------------
-ETAPA 1 Preparacao:
-ATIVIDADE 1 Cortar_chapa:
-Capacidade: 8
-Vazao: 8
-Tempo de execucao: 3
-Tempo medio em fila: 0.13
-Tempo medio total: 3.13
-
-------- RELATORIO DOS PRODUTOS ----------------
---- PRODUTO 2 ---
-Modelo: Widget-A
-Criacao: tick 0
-Entrada na linha: tick 0
-Saida da linha: tick 38
-Tempo total: 38 ticks
-Tempo em espera: 10 ticks
-Falhas: 1
-Trajetoria:
-Etapa 1 tentativa 1:
-Atividade 1 (Cortar_chapa) fila:0 inicio:0 fim:2 FALHOU
-Ticks na etapa: 2 ticks
-Etapa 1 tentativa 2:
-Atividade 1 (Cortar_chapa) fila:2 inicio:3 fim:5 OK
-Atividade 2 (Lixar_bordas) fila:5 inicio:17 fim:16 OK
-Ticks na etapa: 14 ticks
-Etapa 2 tentativa 1:
-Atividade 1 (Soldar_placa) fila:16 inicio:17 fim:21 OK
-Atividade 2 (Fixar_parafusos) fila:21 inicio:22 fim:24 OK
-Atividade 3 (Fixar_cabos) fila:24 inicio:25 fim:28 OK
-Ticks na etapa: 12 ticks
-Etapa 3 tentativa 1:
-Atividade 3 (Teste_de_carga) fila:28 inicio:29 fim:38 OK
-Ticks na etapa: 10 ticks
-
 ```
 
 Os arquivos são armazenados na pasta `relatorios/` e recebem nomes sequenciais para evitar sobrescrever execuções anteriores.
@@ -329,6 +313,17 @@ Um exemplo completo do relatório gerado pode ser encontrado em [relatorio_produ
 
 ![imagem](img/simulacao.png)
 
+---
+## Aprendizados
+
+Durante o desenvolvimento deste projeto foi possível aprofundar conhecimentos em:
+
+- gerenciamento manual de memória;
+- modularização de projetos em C;
+- estruturas de dados dinâmicas;
+- manipulação de arquivos;
+- organização de código de médio porte;
+- simulação baseada em eventos discretos.
 ---
 ## Autores
 
