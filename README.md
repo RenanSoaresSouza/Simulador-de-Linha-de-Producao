@@ -145,6 +145,14 @@ src/
 # Arquivo de Entrada
 
 A simulação é configurada através de um arquivo de texto formado por:
+| Campo       | Descrição                                           |
+| ----------- | --------------------------------------------------- |
+| `SIMULACAO` | Nome da simulação, semente aleatória e tempo máximo |
+| `PRODUTOS`  | Quantidade de produtos, taxa de entrada e nome      |
+| `ETAPA`     | Define uma etapa da linha de produção               |
+| `ATIVIDADE` | Define uma atividade pertencente à etapa atual      |
+Estrutura do Arquivo:
+
 ```
 SIMULACAO [nome_simulacao] [semente_para_numeros_aleatorios] [limite_tempo_seg]
 PRODUTO <quantidade_a_produzir> <taxa_produtos_por_seg> <nome_produto>
@@ -156,7 +164,7 @@ ATIVIDADE <id> <tempo_para_finalizar_atividade> <taxa_falha> [nome]
 Exemplo de um arquivo preenchido:
 ```
 SIMULACAO linha_producao_widgets_v1 42 10000
-PRODUTOS 80 3 Widget-A
+PRODUTO 80 3 Widget-A
 LINHA_PRODUCAO 3
 ETAPA 1 2 8 0.02 Preparacao
 ATIVIDADE 1 3 0.02 Cortar_chapa
@@ -251,11 +259,70 @@ Após iniciar o programa, informe o arquivo de configuração da simulação.
 # Resultados
 
 Ao final da execução, é criado automaticamente um arquivo de relatório contendo todas as métricas obtidas durante a simulação.
+```
+=== METADADOS ===
+id_simulacao: simulacao_20260707_2240
+semente_utilizada: 55
+arquivo_entrada: input.txt
+tick_fim: 1000
+produtos_concluidos: 8
+tempo_medio_linha: 30.63
+tempo_medio_espera: 5.13
+falhas_totais: 1
+Meta alcancada: sim
+Produtos faltantes: 0
+
+=== RELATORIO DA SIMULACAO Widget-A ===
+------- RELATORIO DAS ETAPAS -----------------
+ETAPA 1 Preparacao:
+Atividades: 2
+Quantidade de falhas: 1
+Falhas por produto: 0.13
+Tempo minimo: 3
+Tempo medio: 7.38
+Tempo maximo: 16
+Tempo medio em fila: 6.13
+
+------- RELATORIO DAS ATIVIDADES--------------
+ETAPA 1 Preparacao:
+ATIVIDADE 1 Cortar_chapa:
+Capacidade: 8
+Vazao: 8
+Tempo de execucao: 3
+Tempo medio em fila: 0.13
+Tempo medio total: 3.13
+
+------- RELATORIO DOS PRODUTOS ----------------
+--- PRODUTO 2 ---
+Modelo: Widget-A
+Criacao: tick 0
+Entrada na linha: tick 0
+Saida da linha: tick 38
+Tempo total: 38 ticks
+Tempo em espera: 10 ticks
+Falhas: 1
+Trajetoria:
+Etapa 1 tentativa 1:
+Atividade 1 (Cortar_chapa) fila:0 inicio:0 fim:2 FALHOU
+Ticks na etapa: 2 ticks
+Etapa 1 tentativa 2:
+Atividade 1 (Cortar_chapa) fila:2 inicio:3 fim:5 OK
+Atividade 2 (Lixar_bordas) fila:5 inicio:17 fim:16 OK
+Ticks na etapa: 14 ticks
+Etapa 2 tentativa 1:
+Atividade 1 (Soldar_placa) fila:16 inicio:17 fim:21 OK
+Atividade 2 (Fixar_parafusos) fila:21 inicio:22 fim:24 OK
+Atividade 3 (Fixar_cabos) fila:24 inicio:25 fim:28 OK
+Ticks na etapa: 12 ticks
+Etapa 3 tentativa 1:
+Atividade 3 (Teste_de_carga) fila:28 inicio:29 fim:38 OK
+Ticks na etapa: 10 ticks
+
+```
 
 Os arquivos são armazenados na pasta `relatorios/` e recebem nomes sequenciais para evitar sobrescrever execuções anteriores.
 
-você pode encontrar um exemplo de relatório de saída [aqui](relatorio_producao.txt)
-
+Um exemplo completo do relatório gerado pode ser encontrado em [relatorio_producao.txt](relatorio_producao.txt).
 
 ---
 # Captura de Tela
