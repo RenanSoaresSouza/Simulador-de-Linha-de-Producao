@@ -2,6 +2,7 @@
 ![C](https://img.shields.io/badge/Language-C-blue)
 ![GCC](https://img.shields.io/badge/GCC-Compiler-green)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux-lightgrey)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
 
@@ -332,4 +333,6 @@ Durante o desenvolvimento deste projeto foi possível aprofundar conhecimentos e
 
 Projeto desenvolvido para fins acadêmicos e como demonstração de conhecimentos em programação em C, estruturas de dados e simulação de sistemas.
 
+## 📄 Licença
 
+Este projeto está licenciado sob a Licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais informações.
