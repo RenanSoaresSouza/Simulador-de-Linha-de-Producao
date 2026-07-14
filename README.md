@@ -45,7 +45,6 @@ Este projeto busca reproduzir esses cenários em um ambiente virtual, permitindo
 * Modelar filas entre etapas da produção.
 * Simular falhas operacionais e falhas críticas.
 * Gerar indicadores de desempenho.
-* Demonstrar a utilização de estruturas de dados dinâmicas em C.
 
 ---
 
@@ -335,4 +334,4 @@ Projeto desenvolvido para fins acadêmicos e como demonstração de conhecimento
 
 ## 📄 Licença
 
-Este projeto está licenciado sob a Licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais informações.
+Este projeto possui a Licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais informações.
